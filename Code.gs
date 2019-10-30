@@ -1,5 +1,5 @@
 var SCRIPT_NAME = 'Classes And Groups Script';
-var SCRIPT_VERSION = 'v1.5.dev_ajr';
+var SCRIPT_VERSION = 'v1.6';
 
 function onOpen(e) {
   DocumentApp.getUi()
