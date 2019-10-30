@@ -3,9 +3,13 @@
   "dependencies": {
     "libraries": [{
       "userSymbol": "ClassesAndGroups",
-      "libraryId": "1J8p7pQDIrJOnmt9MGWUB1KzIdj9bPnF6zs1KFRihw9T9nnSdVkbEQXIC",
-      "version": "40"
+      "libraryId": "1cVi2KaG3f2kJBLjrqKFUsxD3xaGTpGxxTejwSPwB8UujSoHP1hnlMm3G",
+      "version": "3"
     }]
+  },
+  "webapp": {
+    "access": "ANYONE_ANONYMOUS",
+    "executeAs": "USER_DEPLOYING"
   },
   "exceptionLogging": "STACKDRIVER"
 }
