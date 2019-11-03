@@ -1,15 +1,13 @@
+
+
 {
   "timeZone": "America/Chicago",
   "dependencies": {
     "libraries": [{
-      "userSymbol": "ClassesAndGroups",
-      "libraryId": "1cVi2KaG3f2kJBLjrqKFUsxD3xaGTpGxxTejwSPwB8UujSoHP1hnlMm3G",
-      "version": "3"
+      "userSymbol": "Config",
+      "libraryId": "1oO44r3nax5MO1XsI1hlr4ZM0OtPVCQKgDYUe08ej_SkIKn9uvzZ6WKQl",
+      "version": "4"
     }]
-  },
-  "webapp": {
-    "access": "ANYONE_ANONYMOUS",
-    "executeAs": "USER_DEPLOYING"
   },
   "exceptionLogging": "STACKDRIVER"
 }
