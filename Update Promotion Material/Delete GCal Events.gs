@@ -1,89 +1,65 @@
-function showDeletePopup_() {
+// Redevelopment Note: right now, the script deletes events one-at-a-time.
+// It should treat the first ocurenence of each event as one in a series and should delete
+// 'This and following events' (NOT 'This event' and NOT 'All events').
 
-  var calendars = [];
-  
-  CalendarApp.getAllCalendars().forEach(function(calendar) {
-    calendars.push(calendar.getName());  
-  })
+// Ioan writes on Freelancer.com 'The script takes long because it depends on number of events in calendar.
+// In order to optimize it, probably a way would be to use direct the calendar API.
+// Without testing and without access to calendars I can't do that.
 
-  var template = HtmlService.createTemplateFromFile('Update Promotion Material/Delete.html');
+function ShowDeletePopup() {
+	var ui = DocumentApp.getUi(),
+		tmpl = HtmlService.createTemplateFromFile('Update Promotion Material/Delete.html'),
+		all_calendars = CalendarApp.getAllCalendars(),
+		calendars = [];
 
-  template.content = {
-    'calendars': calendars
-  };
-  
-  var html = template.evaluate().setWidth(520).setHeight(240);  
-  DocumentApp.getUi().showModalDialog(html, 'Delete settings');
-  
-} // showDeletePopup_()
+	for (var index in all_calendars) {
+		var calendar = all_calendars[index];
 
-function deleteEvents_(calendarNames) {
+		calendars.push(calendar.getName());
+	}
 
-  var logSheet = logInit_()
-  log_(logSheet, JSON.stringify(calendarNames))
+	tmpl.content = {
+		'calendars': calendars
+	};
 
-  var doc = getDoc_();
-  var title = doc.getName();
-  
-  // Look for "[yyyy.MM.dd]", e.g. 2019.01.19, in the document's title
-  var titleDate = title.match(/\[\s*(\d+)\.(\d+)\.(\d+)\s*\]/);
-  
-  if (titleDate.length !== 4) {
-    throw new Error('No date in doc title: [yyyy.MM.dd]')
-  }
-  
-  var year = parseInt(titleDate[1], 10);
-  var month = parseInt(titleDate[2], 10) - 1;
-  var day = parseInt(titleDate[3], 10);
-  
-  var start = new Date(year, month, day);
-  var end = new Date((year + 1), month, day);
-  
-  calendarNames.forEach(function(calendarName) {
-  
-    var calendars = CalendarApp.getCalendarsByName(calendarName);
-    
-    if (calendars.length > 1) {
-      throw new Error('More that one calendar called "' + calendarName + '"');
-    }
+	var html = tmpl.evaluate()
+				   .setWidth(520)
+				   .setHeight(240);
 
-    // Running through the loop once doesn't delete all the events,
-    // so keep on running until they are all definitely gone
+	ui.showModalDialog(html, 'Delete settings');
+}
 
-    var events = calendars[0].getEvents(start, end);
-    var loopCount = 0
+function DeleteEvents(calendars_names) {
+	var doc = DocumentApp.getActiveDocument(),
+		title = doc.getName(),
+		year = 1970,
+		month = 0,
+		day = 1,
+		res = title.match(/\[\s*(\d+)\.(\d+)\.(\d+)\s*\]/);
 
-    while (events.length > 0) {
-    
-      deleteEvents(events);  
-      Utilities.sleep(1000);
-      var events = calendars[0].getEvents(start, end);  
-      log_(logSheet, 'loop count: ' + loopCount++);
-              
-    } // while still events 
-    
-  }) // for each calendar
-  
-  return 
-  
-  // Private Functions
-  // -----------------
-  
-  function deleteEvents(events) {
-    
-    events.forEach(function(event){
-    
-      var name = event.getTitle();
+	if (res.length == 4) {
+		year = parseInt(res[1], 10);
+		month = parseInt(res[2], 10) - 1;
+		day = parseInt(res[3], 10);
+	}
 
-      if (event.isRecurringEvent()) {
-        event.getEventSeries().deleteEventSeries();
-        log_(logSheet, 'Deleted event series"' + name + '"')        
-      } else {
-        event.deleteEvent();
-        log_(logSheet, 'Deleted event"' + name + '"')
-      }    
-    })
-    
-  } // deleteEvents_.deleteEvents()
-   
-} // deleteEvents_()
+	var start = new Date(year, month, day, 0, 0, 0),
+		end = new Date((year + 1), month, day, 0, 0, 0);
+
+	for (var i = 0; i < calendars_names.length; i++) {
+		var calendar = CalendarApp.getCalendarsByName(calendars_names[i]),
+			events = calendar[0].getEvents(start, end);
+
+		while (events.length > 0) {
+			var event = events[0];
+
+			if (event.isRecurringEvent()) {
+				event.getEventSeries().deleteEventSeries();
+			} else {
+				event.deleteEvent();
+			}
+
+			events = calendar[0].getEvents(start, end);
+		}
+	}
+}
