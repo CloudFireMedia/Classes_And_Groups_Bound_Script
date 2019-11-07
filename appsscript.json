@@ -4,7 +4,8 @@
     "libraries": [{
       "userSymbol": "ClassesAndGroups",
       "libraryId": "1cVi2KaG3f2kJBLjrqKFUsxD3xaGTpGxxTejwSPwB8UujSoHP1hnlMm3G",
-      "version": "3"
+      "version": "3",
+      "developmentMode": true
     }]
   },
   "webapp": {
