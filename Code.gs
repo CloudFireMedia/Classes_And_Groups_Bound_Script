@@ -1,5 +1,5 @@
-var SCRIPT_NAME = 'Classes And Groups Script Bound Script';
-var SCRIPT_VERSION = 'v1.6.dev_ajr';
+var SCRIPT_NAME = 'Classes And Groups Bound Script';
+var SCRIPT_VERSION = 'v1.7';
 
 function onOpen(e) {
   DocumentApp.getUi()
@@ -33,15 +33,3 @@ function exportEvents(settings) { return ClassesAndGroups.exportEvents(settings)
 // --------
 
 function changeFilename() { ClassesAndGroups.changeFilename(); }
-
-// Tests
-// -----
-
-function test_exportEvents() {
-  var settings = {
-    populate_days:           ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"], 
-    new_events_calendar:     "andrew@cloudfire.media", 
-    regular_events_calendar: "andrew@cloudfire.media"
-  }
-  exportEvents(settings)
-}
