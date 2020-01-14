@@ -1,5 +1,5 @@
 var SCRIPT_NAME = 'Classes And Groups Bound Script';
-var SCRIPT_VERSION = 'v1.7';
+var SCRIPT_VERSION = 'v1.7.1';
 
 function onOpen(e) {
   DocumentApp.getUi()
